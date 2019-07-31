@@ -2,8 +2,8 @@
  * Combine all reducers in this file and export the combined reducers.
  */
 
-import { combineReducers } from 'redux';
-import { connectRouter } from 'connected-react-router';
+import { combineReducers } from 'redux-immutable';
+import { connectRouter } from 'connected-react-router/immutable';
 
 import history from 'utils/history';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
@@ -17,6 +17,5 @@ export default function createReducer(injectedReducers = {}) {
     router: connectRouter(history),
     ...injectedReducers,
   });
-
   return rootReducer;
 }

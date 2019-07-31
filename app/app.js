@@ -12,15 +12,16 @@ import '@babel/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
+import { ConnectedRouter } from 'connected-react-router/immutable';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
 
 // Import root app
-import App from 'containers/App';
+// eslint-disable-next-line import/no-cycle
+import LanguageProvider from 'containers/LanguageProvider';
+import App from './containers/App';
 
 // Import Language Provider
-import LanguageProvider from 'containers/LanguageProvider';
 
 // Load the favicon and the .htaccess file
 /* eslint-disable import/no-unresolved, import/extensions */
@@ -35,7 +36,7 @@ import { translationMessages } from './i18n';
 
 // Create redux store with history
 const initialState = {};
-export const store = configureStore(initialState, history);
+const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const render = messages => {
@@ -43,7 +44,9 @@ const render = messages => {
     <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
+          {/* <MuiThemeProvider theme={theme}> */}
           <App />
+          {/* </MuiThemeProvider> */}
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,

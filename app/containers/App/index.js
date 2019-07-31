@@ -12,6 +12,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+// eslint-disable-next-line import/no-cycle
 import List from '../List';
 import GlobalStyle from '../../global-styles';
 

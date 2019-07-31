@@ -5,35 +5,11 @@
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-const selectList = state => state.input || initialState;
+const selectList = state => state.get('list', initialState);
 
-const makeSelectWord = () =>
+const makeSelectList = () =>
   createSelector(
     selectList,
-    listState => listState.word,
+    listState => listState.get('list').toJS(),
   );
-
-const makeSelectTranslation = () =>
-  createSelector(
-    selectList,
-    listState => listState.translation,
-  );
-
-const makeSelectNative = () =>
-  createSelector(
-    selectList,
-    listState => listState.native,
-  );
-
-const makeSelectForeign = () =>
-  createSelector(
-    selectList,
-    listState => listState.foreign,
-  );
-export {
-  selectList,
-  makeSelectTranslation,
-  makeSelectWord,
-  makeSelectNative,
-  makeSelectForeign,
-};
+export { selectList, makeSelectList };

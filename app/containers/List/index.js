@@ -1,156 +1,175 @@
-import React, { useEffect, memo } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useInjectReducer } from 'utils/injectReducer';
+import injectReducer from 'utils/injectReducer';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+// import { FormattedMessage } from 'react-intl';
 import CenteredSection from './CenteredSection';
 import Form from './Form';
 import Input from './Input';
 import reducer from './reducer';
-import {
-  makeSelectWord,
-  makeSelectTranslation,
-  makeSelectNative,
-  makeSelectForeign,
-} from './selectors';
-import {
-  changeWord,
-  changeTranslation,
-  addToList,
-  changeNative,
-  changeForeign,
-} from './actions';
+import Table from './List';
+// import ListItem from './ListItem';
+// import ListItemTitle from './ListItemTitle';
+// import messages from './messages';
+import { makeSelectList } from './selectors';
+import { addToList } from './actions';
 import Button from '../../components/Button';
 // eslint-disable-next-line import/no-cycle
-import { store } from '../../app';
+// import { store } from '../../app';
 import Header from '../../components/Header';
 
-const key = 'input';
+class List extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      native: 'English',
+      foreign: 'Spanish',
+      word: '',
+      translation: '',
+      VocabList: [],
+    };
+  }
 
-export function List({
-  word,
-  translation,
-  native,
-  foreign,
-  onSubmitForm,
-  onChangeWord,
-  onChangeTranslation,
-  onChangeNative,
-  onChangeForeign,
-}) {
-  // eslint-disable-next-line no-unused-vars
-  const vocabList = store.getState();
-  // console.log(vocabList);
-  useInjectReducer({ key, reducer });
-  useEffect(() => {
-    // When initial state username is not null, submit the form to load repos
-    if (
-      (word && word.trim().length > 0) ||
-      (translation && translation.trim().length > 0)
-    )
-      onSubmitForm();
-  }, []);
-  //   useInjectSaga({ key, saga });
-  return (
-    <div>
-      <h1>
-        <Header />
-        <CenteredSection>
-          <Form>
-            <label htmlFor="username">
-              <Input
-                id="word"
-                type="text"
-                placeholder="word"
-                value={word}
-                onChange={onChangeWord}
-              />
-              <Input
-                id="translation"
-                type="text"
-                placeholder="translation"
-                value={translation}
-                onChange={onChangeTranslation}
-              />
-              <br />
-              <select id="native" value={native} onChange={onChangeNative}>
-                <option value="English">English</option>
-                <option value="Spanish">Spanish</option>
-                <option value="German">German</option>
-                <option value="Russian">Russian</option>
-              </select>
-              <select id="native" value={foreign} onChange={onChangeForeign}>
-                <option value="English">English</option>
-                <option value="Spanish">Spanish</option>
-                <option value="German">German</option>
-                <option value="Russian">Russian</option>
-              </select>
-              {/* <Input
-                id="native"
-                type="text"
-                // placeholder="translation"
-                value={native}
-                onChange={onChangeNative}
-              />
-              <Input
-                id="foreign"
-                type="text"
-                // placeholder="translation"
-                value={foreign}
-                onChange={onChangeForeign}
-              /> */}
-            </label>
-            <Button onClick={onSubmitForm}>Add</Button>
-          </Form>
-        </CenteredSection>
-      </h1>
-      {/* {store.getState()}; */}
-    </div>
-  );
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
+
+  handleSubmit(event) {
+    event.persist();
+    event.preventDefault();
+    this.props.addToListCall(this.state);
+    // console.log(this.props);
+    // const { list } = store.getState();
+    // this.setState({
+    //   // eslint-disable-next-line react/no-access-state-in-setstate
+    //   ...this.state,
+    //   VocabList: [list.list],
+    // });
+    // console.log(this.state.VocabList);
+  }
+
+  render() {
+    // console.log('list is: ', this.props.list)
+    return (
+      <div>
+        <h1>
+          <Header />
+          <CenteredSection>
+            <Form>
+              <label htmlFor="username">
+                <Input
+                  id="word"
+                  type="text"
+                  name="word"
+                  placeholder="Word"
+                  value={this.state.word}
+                  onChange={e => this.handleChange(e)}
+                />
+                <Input
+                  id="translation"
+                  type="text"
+                  name="translation"
+                  placeholder="Translation"
+                  value={this.state.translation}
+                  onChange={e => this.handleChange(e)}
+                />
+                <br />
+                <select
+                  name="native"
+                  value={this.state.native}
+                  input={<Input id="native" />}
+                  onChange={e => this.handleChange(e)}
+                >
+                  <option value="English">English</option>
+                  <option value="Spanish">Spanish</option>
+                  <option value="German">German</option>
+                  <option value="Russian">Russian</option>
+                </select>
+                <select
+                  name="foreign"
+                  value={this.state.foreign}
+                  input={<Input id="foreign" />}
+                  onChange={e => this.handleChange(e)}
+                >
+                  <option value="English">English</option>
+                  <option value="Spanish">Spanish</option>
+                  <option value="German">German</option>
+                  <option value="Russian">Russian</option>
+                </select>
+              </label>
+              <Button onClick={e => this.handleSubmit(e)}>Add</Button>
+            </Form>
+          </CenteredSection>
+        </h1>
+        <Table>
+          {/* <ListItem> */}
+          {/* <ListItemTitle> */}
+          {/* <FormattedMessage {...messages.scaffoldingHeader} /> */}
+          {/* </ListItemTitle> */}
+          <p>
+            {/* {this.state.VocabList[0]} */}
+            {/* <FormattedMessage {...messages.scaffoldingMessage} /> */}
+          </p>
+          {/* </ListItem> */}
+
+          {/* <ListItem>
+            <ListItemTitle>
+              <FormattedMessage {...messages.feedbackHeader} />
+            </ListItemTitle>
+            <p>
+              <FormattedMessage {...messages.feedbackMessage} />
+            </p>
+          </ListItem>
+
+          <ListItem>
+            <ListItemTitle>
+              <FormattedMessage {...messages.routingHeader} />
+            </ListItemTitle>
+            <p>
+              <FormattedMessage {...messages.routingMessage} />
+            </p>
+          </ListItem>
+
+          <ListItem>
+            <ListItemTitle>
+              <FormattedMessage {...messages.networkHeader} />
+            </ListItemTitle>
+            <p>
+              <FormattedMessage {...messages.networkMessage} />
+            </p>
+          </ListItem>
+
+          <ListItem>
+            <ListItemTitle>
+              <FormattedMessage {...messages.intlHeader} />
+            </ListItemTitle>
+            <p>
+              <FormattedMessage {...messages.intlMessage} />
+            </p>
+          </ListItem> */}
+        </Table>
+      </div>
+    );
+  }
 }
 
 List.propTypes = {
-  word: PropTypes.string,
-  translation: PropTypes.string,
-  native: PropTypes.string,
-  foreign: PropTypes.string,
-  onSubmitForm: PropTypes.func,
-  onChangeWord: PropTypes.func,
-  onChangeTranslation: PropTypes.func,
-  onChangeNative: PropTypes.func,
-  onChangeForeign: PropTypes.func,
+  addToListCall: PropTypes.func,
+  // eslint-disable-next-line react/no-unused-prop-types
+  list: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
-  word: makeSelectWord(),
-  translation: makeSelectTranslation(),
-  native: makeSelectNative(),
-  foreign: makeSelectForeign(),
+  list: makeSelectList(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onChangeWord: evt => dispatch(changeWord(evt.target.value)),
-    onChangeTranslation: evt => dispatch(changeTranslation(evt.target.value)),
-    onChangeNative: evt => dispatch(changeNative(evt.target.value)),
-    onChangeForeign: evt => dispatch(changeForeign(evt.target.value)),
-    onSubmitForm: evt => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      // eslint-disable-next-line no-undef
-      dispatch(
-        addToList({
-          // eslint-disable-next-line no-undef
-          word: word.value,
-          // eslint-disable-next-line no-undef
-          translation: translation.value,
-          // // eslint-disable-next-line no-undef
-          // native: native.value,
-          // // eslint-disable-next-line no-undef
-          // foreign: foreign.value,
-        }),
-      );
-    },
+    addToListCall: list => dispatch(addToList(list)),
   };
 }
 
@@ -159,7 +178,10 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
+const withReducer = injectReducer({ key: 'list', reducer });
+
 export default compose(
   withConnect,
+  withReducer,
   memo,
 )(List);

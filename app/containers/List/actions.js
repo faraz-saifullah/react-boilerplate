@@ -15,49 +15,39 @@
  *    }
  */
 
-import {
-  CHANGE_WORD,
-  CHANGE_TRANSLATION,
-  ADD_TO_LIST,
-  CHANGE_NATIVE,
-  CHANGE_FOREIGN,
-} from './constants';
+import { ADD_TO_LIST } from './constants';
 
-export function changeWord(word) {
-  return {
-    type: CHANGE_WORD,
-    word,
-  };
-}
+// export function changeWord(word) {
+//   return {
+//     type: CHANGE_WORD,
+//     word,
+//   };
+// }
 
-export function changeTranslation(translation) {
-  return {
-    type: CHANGE_TRANSLATION,
-    translation,
-  };
-}
+// export function changeTranslation(translation) {
+//   return {
+//     type: CHANGE_TRANSLATION,
+//     translation,
+//   };
+// }
 
-export function changeNative(native) {
-  return {
-    type: CHANGE_NATIVE,
-    native,
-  };
-}
+// export function changeNative(native) {
+//   return {
+//     type: CHANGE_NATIVE,
+//     native,
+//   };
+// }
 
-export function changeForeign(foreign) {
-  return {
-    type: CHANGE_FOREIGN,
-    foreign,
-  };
-}
+// export function changeForeign(foreign) {
+//   return {
+//     type: CHANGE_FOREIGN,
+//     foreign,
+//   };
+// }
 
 export function addToList(list) {
   return {
     type: ADD_TO_LIST,
-    list,
-    word: '',
-    translation: '',
-    native: 'English',
-    foreign: 'Spanish',
+    payload: list,
   };
 }
