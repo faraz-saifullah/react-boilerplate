@@ -1,21 +1,19 @@
 import { fromJS } from 'immutable';
-import { ADD_TO_LIST } from './constants';
+import { ADD_TO_TEST } from './constants';
 // eslint-disable-next-line import/no-cycle
 
 // The initial state of the App
 export const initialState = fromJS({
-  list: [],
+  test: [],
 });
 
 /* eslint-disable default-case, no-param-reassign */
 function listReducer(state = initialState, action) {
   switch (action.type) {
-    case ADD_TO_LIST:
+    case ADD_TO_TEST:
       // eslint-disable-next-line no-case-declarations
-      const list = state.get('list').toJS();
-      // eslint-disable-next-line no-case-declarations
-      const finalList = fromJS([...list, action.payload]);
-      return state.set('list', finalList);
+      const finalTest = fromJS([action.payload]);
+      return state.set('test', finalTest);
     default:
       return state;
   }

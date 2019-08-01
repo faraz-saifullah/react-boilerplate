@@ -10,6 +10,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import injectReducer from 'utils/injectReducer';
+import uuidv1 from 'uuid/v1';
 import CenteredSection from './CenteredSection';
 import Form from './Form';
 import Button from '../../components/Button';
@@ -33,6 +34,7 @@ class SimpleModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      key: '',
       open: false,
       native: 'English',
       word: '',
@@ -41,9 +43,12 @@ class SimpleModal extends React.Component {
     };
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.persist();
     event.preventDefault();
+    await this.setState({
+      key: uuidv1(),
+    });
     // eslint-disable-next-line react/prop-types
     this.props.addToListCall(this.state);
   }
@@ -105,9 +110,7 @@ class SimpleModal extends React.Component {
                 <Form>
                   <label htmlFor="username">
                     <FormControl>
-                      <InputLabel shrink htmlFor="age-native-label-placeholder">
-                        Native
-                      </InputLabel>
+                      <InputLabel>Native</InputLabel>
                       <NativeSelect
                         name="native"
                         value={this.state.native}
@@ -121,9 +124,7 @@ class SimpleModal extends React.Component {
                       <FormHelperText>Select Native Language</FormHelperText>
                     </FormControl>{' '}
                     <FormControl>
-                      <InputLabel shrink htmlFor="age-native-label-placeholder">
-                        Foreign
-                      </InputLabel>
+                      <InputLabel>Foreign</InputLabel>
                       <NativeSelect
                         name="foreign"
                         value={this.state.foreign}
@@ -145,22 +146,6 @@ class SimpleModal extends React.Component {
                       value={this.state.word}
                       onChange={e => this.handleChange(e)}
                     />{' '}
-                    {/* <FormControl>
-                      <InputLabel shrink htmlFor="age-native-label-placeholder">
-                        Foreign
-                      </InputLabel>
-                      <NativeSelect
-                        name="foreign"
-                        value={this.state.foreign}
-                        onChange={e => this.handleChange(e)}
-                      >
-                        <option value="English">English</option>
-                        <option value="Spanish">Spanish</option>
-                        <option value="German">German</option>
-                        <option value="Russian">Russian</option>
-                      </NativeSelect>
-                      <FormHelperText>Select Native Language</FormHelperText>
-                    </FormControl> */}
                     <Input
                       id="translation"
                       type="text"

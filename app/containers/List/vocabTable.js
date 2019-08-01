@@ -4,8 +4,9 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { makeSelectList } from './selectors';
+// import console = require('console');
 
-export function MaterialTableDemo(list) {
+export function VocabTable(list) {
   const [state, setState] = React.useState({
     columns: [
       { title: 'From Language', field: 'native' },
@@ -42,22 +43,9 @@ const mapStateToProps = createStructuredSelector({
   list: makeSelectList(),
 });
 
-export function mapDispatchToProps() {
-  return {
-    //   onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
-    //   onSubmitForm: evt => {
-    //     if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-    //     dispatch(loadRepos());
-    //   },
-  };
-}
-
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
+const withConnect = connect(mapStateToProps);
 
 export default compose(
   withConnect,
   memo,
-)(MaterialTableDemo);
+)(VocabTable);

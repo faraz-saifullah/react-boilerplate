@@ -65,6 +65,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.4.3",
+    "@material-ui/icons": "^4.2.1",
     "chalk": "2.4.2",
     "compression": "1.7.4",
     "connected-react-router": "6.4.0",
@@ -98,7 +99,8 @@
     "redux-saga": "1.0.2",
     "reselect": "4.0.0",
     "sanitize.css": "8.0.0",
-    "styled-components": "4.2.0"
+    "styled-components": "4.2.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/cli": "7.4.3",

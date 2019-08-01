@@ -11,10 +11,8 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import CenteredSection from './CenteredSection';
 import Header from '../../components/Header';
-// import { store } from '../../app';
 
 export default function HomePage() {
-  // console.log('this is store: ', vocabList);
   return (
     <h1>
       <CenteredSection>
