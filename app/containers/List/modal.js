@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import injectReducer from 'utils/injectReducer';
+import CenteredSection from './CenteredSection';
+import Form from './Form';
 import Button from '../../components/Button';
+import Input from './Input';
+import { addToList } from './actions';
+import reducer from './reducer';
 
 const styles = theme => ({
   paper: {
@@ -22,11 +34,24 @@ class SimpleModal extends React.Component {
     super(props);
     this.state = {
       open: false,
+      native: 'English',
+      word: '',
+      foreign: 'Spanish',
+      translation: '',
     };
   }
 
-  rand() {
-    return Math.round(Math.random() * 20) - 10;
+  handleSubmit(event) {
+    event.persist();
+    event.preventDefault();
+    // eslint-disable-next-line react/prop-types
+    this.props.addToListCall(this.state);
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
   }
 
   getModalStyle() {
@@ -75,10 +100,80 @@ class SimpleModal extends React.Component {
             }}
             className={classes.paper}
           >
-            <h2 id="modal-title">Text in a modal</h2>
-            <p id="simple-modal-description">
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </p>
+            <h1>
+              <CenteredSection>
+                <Form>
+                  <label htmlFor="username">
+                    <FormControl>
+                      <InputLabel shrink htmlFor="age-native-label-placeholder">
+                        Native
+                      </InputLabel>
+                      <NativeSelect
+                        name="native"
+                        value={this.state.native}
+                        onChange={e => this.handleChange(e)}
+                      >
+                        <option value="English">English</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="German">German</option>
+                        <option value="Russian">Russian</option>
+                      </NativeSelect>
+                      <FormHelperText>Select Native Language</FormHelperText>
+                    </FormControl>{' '}
+                    <FormControl>
+                      <InputLabel shrink htmlFor="age-native-label-placeholder">
+                        Foreign
+                      </InputLabel>
+                      <NativeSelect
+                        name="foreign"
+                        value={this.state.foreign}
+                        onChange={e => this.handleChange(e)}
+                      >
+                        <option value="English">English</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="German">German</option>
+                        <option value="Russian">Russian</option>
+                      </NativeSelect>
+                      <FormHelperText>Select Native Language</FormHelperText>
+                    </FormControl>
+                    <br />
+                    <Input
+                      id="word"
+                      type="text"
+                      name="word"
+                      placeholder="Word"
+                      value={this.state.word}
+                      onChange={e => this.handleChange(e)}
+                    />{' '}
+                    {/* <FormControl>
+                      <InputLabel shrink htmlFor="age-native-label-placeholder">
+                        Foreign
+                      </InputLabel>
+                      <NativeSelect
+                        name="foreign"
+                        value={this.state.foreign}
+                        onChange={e => this.handleChange(e)}
+                      >
+                        <option value="English">English</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="German">German</option>
+                        <option value="Russian">Russian</option>
+                      </NativeSelect>
+                      <FormHelperText>Select Native Language</FormHelperText>
+                    </FormControl> */}
+                    <Input
+                      id="translation"
+                      type="text"
+                      name="translation"
+                      placeholder="Translation"
+                      value={this.state.translation}
+                      onChange={e => this.handleChange(e)}
+                    />
+                  </label>
+                  <Button onClick={e => this.handleSubmit(e)}>Add</Button>
+                </Form>
+              </CenteredSection>
+            </h1>
           </div>
         </Modal>
       </div>
@@ -87,8 +182,33 @@ class SimpleModal extends React.Component {
 }
 SimpleModal.protoTypes = {
   classes: PropTypes.object.isRequired,
+  addToListCall: PropTypes.func,
+  // eslint-disable-next-line react/no-unused-prop-types
+  list: PropTypes.array,
 };
 
-export default compose(withStyles(styles, { name: 'AddTranslation' }))(
-  SimpleModal,
+const mapStateToProps = createStructuredSelector({
+  // list: makeSelectList(),
+});
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    addToListCall: list => dispatch(addToList(list)),
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
 );
+
+const withReducer = injectReducer({ key: 'list', reducer });
+
+export default compose(
+  withStyles(styles, {
+    name: 'AddTranslation',
+  }),
+  withConnect,
+  withReducer,
+  memo,
+)(SimpleModal);
