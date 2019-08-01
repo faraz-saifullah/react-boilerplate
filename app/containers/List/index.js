@@ -4,33 +4,53 @@ import { connect } from 'react-redux';
 import injectReducer from 'utils/injectReducer';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-// import { FormattedMessage } from 'react-intl';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 import CenteredSection from './CenteredSection';
 import Form from './Form';
 import Input from './Input';
 import reducer from './reducer';
-import Table from './List';
-// import ListItem from './ListItem';
-// import ListItemTitle from './ListItemTitle';
-// import messages from './messages';
 import { makeSelectList } from './selectors';
 import { addToList } from './actions';
 import Button from '../../components/Button';
-// eslint-disable-next-line import/no-cycle
-// import { store } from '../../app';
-import Header from '../../components/Header';
+import MaterialTableDemo from './table';
+import SimpleModal from './modal';
 
 class List extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       native: 'English',
-      foreign: 'Spanish',
       word: '',
+      foreign: 'Spanish',
       translation: '',
-      VocabList: [],
     };
   }
+
+  // getTableBodyAsReactElement() {
+  //   const inv = this.props.list;
+  //   console.log('inv: ', inv);
+
+  //   return !inv ? null : (
+  //     <tbody>
+  //       {inv.map(item => {
+  //         // changed here
+  //         console.log('item: ', item);
+  //         return (
+  //           <tr key={inv.id}>
+  //             {Object.entries(item).map(field => {
+  //               // changed here
+  //               console.log('field: ', field);
+  //               return <td key={item.id}>{field[1]}</td>;
+  //             })}
+  //           </tr>
+  //         );
+  //       })}
+  //     </tbody>
+  //   );
+  // }
 
   handleChange(event) {
     this.setState({
@@ -42,22 +62,13 @@ class List extends React.Component {
     event.persist();
     event.preventDefault();
     this.props.addToListCall(this.state);
-    // console.log(this.props);
-    // const { list } = store.getState();
-    // this.setState({
-    //   // eslint-disable-next-line react/no-access-state-in-setstate
-    //   ...this.state,
-    //   VocabList: [list.list],
-    // });
-    // console.log(this.state.VocabList);
   }
 
   render() {
-    // console.log('list is: ', this.props.list)
     return (
       <div>
+        <SimpleModal />
         <h1>
-          <Header />
           <CenteredSection>
             <Form>
               <label htmlFor="username">
@@ -78,80 +89,44 @@ class List extends React.Component {
                   onChange={e => this.handleChange(e)}
                 />
                 <br />
-                <select
-                  name="native"
-                  value={this.state.native}
-                  input={<Input id="native" />}
-                  onChange={e => this.handleChange(e)}
-                >
-                  <option value="English">English</option>
-                  <option value="Spanish">Spanish</option>
-                  <option value="German">German</option>
-                  <option value="Russian">Russian</option>
-                </select>
-                <select
-                  name="foreign"
-                  value={this.state.foreign}
-                  input={<Input id="foreign" />}
-                  onChange={e => this.handleChange(e)}
-                >
-                  <option value="English">English</option>
-                  <option value="Spanish">Spanish</option>
-                  <option value="German">German</option>
-                  <option value="Russian">Russian</option>
-                </select>
+                <FormControl>
+                  <InputLabel shrink htmlFor="age-native-label-placeholder">
+                    Native
+                  </InputLabel>
+                  <NativeSelect
+                    name="native"
+                    value={this.state.native}
+                    onChange={e => this.handleChange(e)}
+                  >
+                    <option value="English">English</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="German">German</option>
+                    <option value="Russian">Russian</option>
+                  </NativeSelect>
+                  <FormHelperText>Select Native Language</FormHelperText>
+                </FormControl>
+                <FormControl>
+                  <InputLabel shrink htmlFor="age-native-label-placeholder">
+                    Foreign
+                  </InputLabel>
+                  <NativeSelect
+                    name="foreign"
+                    value={this.state.foreign}
+                    onChange={e => this.handleChange(e)}
+                  >
+                    <option value="English">English</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="German">German</option>
+                    <option value="Russian">Russian</option>
+                  </NativeSelect>
+                  <FormHelperText>Select Native Language</FormHelperText>
+                </FormControl>
               </label>
               <Button onClick={e => this.handleSubmit(e)}>Add</Button>
             </Form>
           </CenteredSection>
+          <MaterialTableDemo />
         </h1>
-        <Table>
-          {/* <ListItem> */}
-          {/* <ListItemTitle> */}
-          {/* <FormattedMessage {...messages.scaffoldingHeader} /> */}
-          {/* </ListItemTitle> */}
-          <p>
-            {/* {this.state.VocabList[0]} */}
-            {/* <FormattedMessage {...messages.scaffoldingMessage} /> */}
-          </p>
-          {/* </ListItem> */}
-
-          {/* <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.feedbackHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.feedbackMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.routingHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.routingMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.networkHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.networkMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.intlHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.intlMessage} />
-            </p>
-          </ListItem> */}
-        </Table>
       </div>
     );
   }

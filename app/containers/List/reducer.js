@@ -4,11 +4,7 @@ import { ADD_TO_LIST } from './constants';
 
 // The initial state of the App
 export const initialState = fromJS({
-  list: [
-    {
-      name: 'faraz',
-    },
-  ],
+  list: [],
 });
 
 // export const

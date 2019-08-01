@@ -1,0 +1,10 @@
+{
+  "editor.tabSize": 2,
+  "editor.fontSize": 14,
+  "editor.wordWrap": "on",
+  "editor.insertSpaces": false,
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "eslint.autoFixOnSave": false,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true
+}
