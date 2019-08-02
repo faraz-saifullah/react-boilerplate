@@ -4,25 +4,29 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import injectReducer from 'utils/injectReducer';
+import MobileStepper from '@material-ui/core/MobileStepper';
 import { makeSelectList } from '../List/selectors';
-import { makeSelectTest } from './selectors';
-import { addToTest } from './actions';
+import { makeSelectTest, makeSelectAnswers } from './selectors';
+import { addToTest, finishTest } from './actions';
 import Header from '../../components/Header';
-import Button from '../../components/Button';
+import CenteredSection from './CenteredSection';
 import reducer from './reducer';
 import Form from './Form';
+import HeaderLink from './HeaderLink';
 import Input from './Input';
 
 class TestList extends React.Component {
-  // componentDidMount() {
-  //   this.startTest();
-  // }
   constructor(props) {
     super(props);
     this.state = {
       index: 0,
       translation: '',
+      answers: ['', '', '', '', '', '', '', '', '', ''],
     };
+  }
+
+  componentDidMount() {
+    this.startTest();
   }
 
   startTest() {
@@ -39,17 +43,23 @@ class TestList extends React.Component {
     this.props.addToTestCall(tempList);
   }
 
-  nextQuestion() {
+  nextQuestion(current, answer, allAnswers) {
+    const answerList = allAnswers;
+    answerList[current] = answer;
     this.setState({
-      // eslint-disable-next-line react/no-access-state-in-setstate
-      index: (this.state.index + 1) % 10,
+      answers: answerList,
+      index: current + 1 < 10 ? current + 1 : 9,
+      translation: '',
     });
   }
 
-  prevQuestion() {
+  prevQuestion(current, answer, allAnswers) {
+    const answerList = allAnswers;
+    answerList[current] = answer;
     this.setState({
-      // eslint-disable-next-line react/no-access-state-in-setstate
-      index: (this.state.index - 1) % 10,
+      answers: answerList,
+      index: current - 1 > -1 ? current - 1 : 0,
+      translation: '',
     });
   }
 
@@ -66,75 +76,110 @@ class TestList extends React.Component {
   }
 
   render() {
-    // eslint-disable-next-line react/prop-types
-    const data = this.props.test[0];
-    // eslint-disable-next-line no-console
-    console.log(data[this.state.index]);
+    let data;
+    if (typeof this.props.test[0] === 'undefined') {
+      data = this.props.list;
+    } else {
+      data = this.props.test;
+    }
     return (
-      <div>
+      <CenteredSection>
         <h1>
           <Header />
-          <Button onClick={e => this.clickStartTest(e)}>Start The Test</Button>
-          {/* {listItems} */}
-          {/* <form>{this.theTest()};</form> */}
-          {/* <Button onClick={() => this.prevQuestion()}>Previous</Button>
-          <p>Word: {data[this.state.index].word}</p>
-					<form>
-						<input value={this.state}/>
-					</form>
-					<Button onClick={() => this.nextQuestion()}>Next</Button> */}
           <Form>
-            <label htmlFor="username">
-              <Input
-                id="native"
-                type="text"
-                name="native"
-                value={data[this.state.index].native}
-              />{' '}
-              <Input
-                id="word"
-                type="text"
-                name="word"
-                value={data[this.state.index].word}
-              />{' '}
-              <Input
-                id="foreign"
-                type="text"
-                name="foreign"
-                value={data[this.state.index].foreign}
-              />{' '}
-              <Input
-                id="translation"
-                type="text"
-                name="translation"
-                placeholder="Translation"
-                value={this.state.translation}
-                onChange={e => this.handleChange(e)}
-              />
-            </label>
-            <Button onClick={() => this.prevQuestion()}>Previous</Button>
-            <Button onClick={() => this.nextQuestion()}>Next</Button>
+            <MobileStepper
+              variant="progress"
+              steps={10}
+              position="top"
+              style={{ width: '200%' }}
+              activeStep={this.state.index}
+            />
+            <p>Question {this.state.index + 1} / 10</p>
+            <br />
+            <Input
+              id="native"
+              type="text"
+              name="native"
+              value={data[this.state.index].native}
+            />{' '}
+            <Input
+              id="word"
+              type="text"
+              name="word"
+              value={data[this.state.index].word}
+            />
+            <br />
+            <Input
+              id="foreign"
+              type="text"
+              name="foreign"
+              value={data[this.state.index].foreign}
+            />{' '}
+            <Input
+              id="translation"
+              type="text"
+              name="translation"
+              placeholder="Translation"
+              value={this.state.translation}
+              onChange={e => this.handleChange(e)}
+            />
+            <br />
+            <br />
+            <HeaderLink
+              id="previous"
+              onClick={() =>
+                this.prevQuestion(
+                  this.state.index,
+                  this.state.translation,
+                  this.state.answers,
+                )
+              }
+            >
+              Prev
+            </HeaderLink>
+            <HeaderLink
+              id="next"
+              onClick={() =>
+                this.nextQuestion(
+                  this.state.index,
+                  this.state.translation,
+                  this.state.answers,
+                )
+              }
+            >
+              Next
+            </HeaderLink>
+            <HeaderLink
+              id="finish"
+              onClick={() => this.props.finishTestCall(this.state.answers)}
+              to="/result"
+            >
+              Finish
+            </HeaderLink>
           </Form>
         </h1>
-      </div>
+      </CenteredSection>
     );
   }
 }
 
 TestList.propTypes = {
   addToTestCall: PropTypes.func,
-  // eslint-disable-next-line react/no-unused-prop-types
+  finishTestCall: PropTypes.func,
   list: PropTypes.array,
+  test: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   list: makeSelectList(),
   test: makeSelectTest(),
+  answers: makeSelectAnswers(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
     addToTestCall: test => dispatch(addToTest(test)),
+    finishTestCall: answers => dispatch(finishTest(answers)),
   };
 }
 

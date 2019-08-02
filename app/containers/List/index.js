@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -22,11 +21,6 @@ class List extends React.Component {
     );
   }
 }
-
-List.propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
-  list: PropTypes.array,
-};
 
 const mapStateToProps = createStructuredSelector({
   list: makeSelectList(),

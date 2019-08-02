@@ -168,7 +168,6 @@ class SimpleModal extends React.Component {
 SimpleModal.protoTypes = {
   classes: PropTypes.object.isRequired,
   addToListCall: PropTypes.func,
-  // eslint-disable-next-line react/no-unused-prop-types
   list: PropTypes.array,
 };
 

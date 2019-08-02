@@ -15,6 +15,7 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import List from '../List';
 import TestList from '../TestList';
 import GlobalStyle from '../../global-styles';
+import Result from '../Result';
 
 export default function App() {
   return (
@@ -23,7 +24,7 @@ export default function App() {
         <Route exact path="/" component={HomePage} />
         <Route exact path="/list" component={List} />
         <Route exact path="/test" component={TestList} />
-        <Route exact path="/result" component={HomePage} />
+        <Route exact path="/result" component={Result} />
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />

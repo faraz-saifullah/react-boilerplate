@@ -10,3 +10,4 @@
  */
 
 export const ADD_TO_TEST = 'boilerplate/TestList/ADD_TO_TEST';
+export const FINISH_TEST = 'boilerplate/TestList/FINISH_TEST';

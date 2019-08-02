@@ -14,12 +14,19 @@
  *        return { type: YOUR_ACTION_CONSTANT, var: var }
  *    }
  */
-import { ADD_TO_TEST } from './constants';
+import { ADD_TO_TEST, FINISH_TEST } from './constants';
 
 export function addToTest(test) {
   // console.log('inside action creator', test);
   return {
     type: ADD_TO_TEST,
     payload: test,
+  };
+}
+
+export function finishTest(answers) {
+  return {
+    type: FINISH_TEST,
+    payload: answers,
   };
 }

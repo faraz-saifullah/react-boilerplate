@@ -9,8 +9,5 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const CHANGE_WORD = 'boilerplate/List/CHANGE_WORD';
-export const CHANGE_TRANSLATION = 'boilerplate/List/CHANGE_TRANSLATION';
+export const DELETE_FROM_LIST = 'boilerplate/List/DELETE_FROM_LIST';
 export const ADD_TO_LIST = 'boilerplate/List/ADD_TO_LIST';
-export const CHANGE_NATIVE = 'boilerplate/List/CHANGE_NATIVE';
-export const CHANGE_FOREIGN = 'boilerplate/List/CHANGE_FOREIGN';

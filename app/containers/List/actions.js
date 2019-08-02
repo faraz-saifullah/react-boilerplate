@@ -15,11 +15,18 @@
  *    }
  */
 
-import { ADD_TO_LIST } from './constants';
+import { ADD_TO_LIST, DELETE_FROM_LIST } from './constants';
 
 export function addToList(list) {
   return {
     type: ADD_TO_LIST,
+    payload: list,
+  };
+}
+
+export function deleteFromList(list) {
+  return {
+    type: DELETE_FROM_LIST,
     payload: list,
   };
 }
